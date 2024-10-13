@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body{
+      background: hsl(212.7,12.4%,14.2%);
+    }
+    .hero{
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      
+    }
+        .calculator-container {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0px 0px 8px 0px hsl(212.7,0%,42.1%);
+            border-radius: 10px;
+        }
+        
+        .calculator-screen {
+            width: 100%;
+            box-shadow: 0px 0px 8px 0px hsl(212.7,0%,42.1%);
+            height: 70px;
+            color: white;
+            background: black;
+            padding: 10px;
+            font-size: 26px;
+            text-align: right;
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            align-items: center;
+        }
+        
+        .calculator-btn-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .calculator-btn {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          margin-top: 5px;
+          font-weight: 500;
+          align-items: center;
+            font-size: 19px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            background: hsl(212.7,12.4%,14.2%);
+            box-shadow: 0px 0px 8px 0px hsl(212.7,0%,42.1%);
+            color: white;
+        }
+        
+        
+        
+        .calculator-btn:active {
+            background-color: #ccc;
+        }
+        
+        .delete-btn {
+            background-color: #ff5555;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="calculator-container">
+        <div id="calculator-screen" class="calculator-screen"></div>
+        <div class="calculator-btn-container">
+            <button id="btn-7" class="calculator-btn">7</button>
+            <button id="btn-8" class="calculator-btn">8</button>
+            <button id="btn-9" class="calculator-btn">9</button>
+            <button id="btn-divide" class="calculator-btn">/</button>
+            <button id="btn-4" class="calculator-btn">4</button>
+            <button id="btn-5" class="calculator-btn">5</button>
+            <button id="btn-6" class="calculator-btn">6</button>
+            <button id="btn-multiply" class="calculator-btn">*</button>
+            <button id="btn-1" class="calculator-btn">1</button>
+            <button id="btn-2" class="calculator-btn">2</button>
+            <button id="btn-3" class="calculator-btn">3</button>
+            <button id="btn-subtract" class="calculator-btn">-</button>
+            <button id="btn-0" class="calculator-btn">0</button>
+            <button id="btn-decimal" class="calculator-btn">.</button>
+            <button id="btn-equals" class="calculator-btn">=</button>
+            <button id="btn-add" class="calculator-btn">+</button>
+            <button id="btn-delete" class="calculator-btn delete-btn">DEL</button>
+        </div>
+    </div>
+    </div>
+    <script>
+
+const calculatorScreen = document.getElementById('calculator-screen');
+
+let currentNumber = '';
+let previousNumber = '';
+let operation = '';
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('calculator-btn')) {
+        const btnValue = e.target.innerText;
+
+        if (btnValue >= 0 && btnValue <= 9) {
+            currentNumber += btnValue;
+            calculatorScreen.innerText = currentNumber;
+        } else if (btnValue === '.') {
+            if (!currentNumber.includes('.')) {
+                currentNumber += '.';
+                calculatorScreen.innerText = currentNumber;
+            }
+        } else if (btnValue === '=') {
+            if (currentNumber && previousNumber && operation) {
+                const result = calculate(previousNumber, currentNumber, operation);
+                calculatorScreen.innerText = result;
+                previousNumber = '';
+                currentNumber = result.toString();
+                operation = '';
+            }
+        } else if (btnValue === 'DEL') {
+            currentNumber = currentNumber.slice(0, -1);
+            calculatorScreen.innerText = currentNumber;
+        } else if (btnValue === 'C') {
+            currentNumber = '';
+            previousNumber = '';
+            operation = '';
+            calculatorScreen.innerText = '0';
+        } else {
+            if (currentNumber) {
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operation = btnValue;
+            }
+        }
+    }
+});
+
+function calculate(num1, num2, op) {
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
+
+    switch (op) {
+        case '+':
+            return num1 + num2;
+        case '-':
+            return num1 - num2;
+        case '*':
+            return num1 * num2;
+        case '/':
+            if (num2 !== 0) {
+                return num1 / num2;
+            } else {
+                return 'Error';
+            }
+        default:
+            return 'Error';
+    }
+}
+
+    </script>
+    </body>
+   </html>
